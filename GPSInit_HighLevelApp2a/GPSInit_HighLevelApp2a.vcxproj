@@ -44,7 +44,9 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="epoll_timerfd_utilities.c" />
+    <ClCompile Include="tinygps.c" />
     <ClInclude Include="epoll_timerfd_utilities.h" />
+    <ClInclude Include="tinygps.h" />
     <UpToDateCheckInput Include="app_manifest.json" />
     <ClInclude Include="applibs_versions.h" />
   </ItemGroup>

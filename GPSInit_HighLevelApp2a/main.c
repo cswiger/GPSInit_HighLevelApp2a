@@ -32,6 +32,9 @@
 // This sample uses a single-thread event loop pattern, based on epoll and timerfd
 #include "epoll_timerfd_utilities.h"
 
+// gps parser
+#include "tinygps.h"
+
 // File descriptors - initialized to invalid value
 static int gpsPwrGpioFd = -1;		//  AVNET_MT3620_SK_GPIO0 on Click Socket1 PWM to board PWR ON_OFF input line
 static int gpsWakeupGpioFd = -1;    //   AVNET_MT3620_SK_GPIO42 on Click Socket1 AN to board WAKEUP
@@ -124,11 +127,15 @@ static void UartEventHandler(EventData* eventData)
 	}
 
 	if (bytesRead > 0) {
-		// Null terminate the buffer to make it a valid string, and print it
-		receiveBuffer[bytesRead] = 0;
-		// \r so debug out does not barberpole
-		Log_Debug("UART received %d bytes: '%s'.\n\r", bytesRead, (char*)receiveBuffer);
+		for (int i = 0; i < bytesRead; i++) {
+			gps_encode(receiveBuffer[i]);
+		}
 	}
+
+	float latitude, longitude;
+	unsigned long fix_age;
+	gps_f_get_position(&latitude, &longitude, &fix_age);
+	Log_Debug("Position: %f, %f; fix age: %f\n\r", latitude, longitude, fix_age);
 }
 
 // event handler data structures. Only the event handler field needs to be populated.

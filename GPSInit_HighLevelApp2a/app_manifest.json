@@ -1,0 +1,12 @@
+{
+  "SchemaVersion": 1,
+  "Name": "GPIO_HighLevelApp",
+  "ComponentId": "dc7f135c-6074-4d49-aa3a-160e4eed884f",
+  "EntryPoint": "/bin/app",
+  "CmdArgs": [],
+  "Capabilities": {
+    "Gpio": [ "$SAMPLE_RGBLED_BLUE", "$AVNET_MT3620_SK_GPIO42", "$AVNET_MT3620_SK_GPIO0" ],
+    "Uart": [ "$SAMPLE_UART" ]
+  }, 
+  "ApplicationType": "Default"
+}

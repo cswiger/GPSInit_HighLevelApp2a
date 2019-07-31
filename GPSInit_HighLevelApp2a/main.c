@@ -141,25 +141,24 @@ static EventData uartEventData = { .eventHandler = &UartEventHandler };
 /// <returns>0 on success, or -1 on failure</returns>
 static int InitPeripheralsAndHandlers(void)
 {
-    struct sigaction action;
-    memset(&action, 0, sizeof(struct sigaction));
-    action.sa_handler = TerminationHandler;
-    sigaction(SIGTERM, &action, NULL);
+	struct sigaction action;
+	memset(&action, 0, sizeof(struct sigaction));
+	action.sa_handler = TerminationHandler;
+	sigaction(SIGTERM, &action, NULL);
 
-    epollFd = CreateEpollFd();
-    if (epollFd < 0) {
-        return -1;
-    }
+	epollFd = CreateEpollFd();
+	if (epollFd < 0) {
+		return -1;
+	}
 
 
-    // Open PWR GPIO, set as output with value GPIO_Value_Low (off)
-    Log_Debug("Opening GPS PWR as output.\n");
-    gpsPwrGpioFd = GPIO_OpenAsOutput(AVNET_MT3620_SK_GPIO0, GPIO_OutputMode_PushPull, GPIO_Value_Low);
-    if (gpsPwrGpioFd < 0) {
-        Log_Debug("ERROR: Could not open GPS PWR GPIO: %s (%d).\n", strerror(errno), errno);
-        return -1;
-    }
-
+	// Open PWR GPIO, set as output with value GPIO_Value_Low (off)
+	Log_Debug("Opening GPS PWR as output.\n");
+	gpsPwrGpioFd = GPIO_OpenAsOutput(AVNET_MT3620_SK_GPIO0, GPIO_OutputMode_PushPull, GPIO_Value_Low);
+	if (gpsPwrGpioFd < 0) {
+		Log_Debug("ERROR: Could not open GPS PWR GPIO: %s (%d).\n", strerror(errno), errno);
+		return -1;
+	}
 
 	Log_Debug("Opening GPS WAKEUP as input.\n");
 	gpsWakeupGpioFd = GPIO_OpenAsInput(AVNET_MT3620_SK_GPIO42);	// input from GPS WAKEUP pad
@@ -198,11 +197,11 @@ static int InitPeripheralsAndHandlers(void)
 	}
 
 
-    gpsInitTimerFd = CreateTimerFdAndAddToEpoll(epollFd, &pulseInterval,
+	gpsInitTimerFd = CreateTimerFdAndAddToEpoll(epollFd, &pulseInterval,
                                                     &gpsInitTimerEventData, EPOLLIN);
-    if (gpsInitTimerFd < 0) {
-        return -1;
-    }
+	if (gpsInitTimerFd < 0) {
+		return -1;
+	}
 
 
 	// Create a UART_Config object, open the UART and set up UART event handler
@@ -216,11 +215,11 @@ static int InitPeripheralsAndHandlers(void)
 		return -1;
 	}
 	if (RegisterEventHandlerToEpoll(epollFd, uartFd, &uartEventData, EPOLLIN) != 0) {
-		return -1;
+	return -1;
 	}
 
 	// everything worked, return zero status
-    return 0;
+	return 0;
 }
 
 /// <summary>
